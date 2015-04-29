@@ -1,0 +1,47 @@
+#include "Globals.h"
+
+bool InitSDL()
+{
+    if(SDL_Init(SDL_INIT_EVERYTHING) == -1)
+    {
+        std::cout << "Could not initialize SDL: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    else
+    {
+        theWindow = SDL_CreateWindow("Window!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_W, SCREEN_H, SDL_WINDOW_SHOWN);
+        if(theWindow == NULL)
+        {
+            std::cout << "Could not create the window! ERROR" <<SDL_GetError() << std::endl;
+            return false;
+        }
+        else
+        {
+
+            theRenderer = SDL_CreateRenderer(theWindow, -1, SDL_RENDERER_ACCELERATED);
+
+            if(theRenderer == NULL)
+            {
+                std::cout << "Something Went Wrong! Render Error" << SDL_GetError() <<std::endl;
+                return false;
+            }
+            else
+            {
+                SDL_SetRenderDrawColor(theRenderer, 255, 255, 255, 255);
+                return true;
+            }
+        }
+    }
+}
+
+void Close()
+{
+    SDL_DestroyWindow(theWindow);
+    SDL_DestroyRenderer(theRenderer);
+
+    theWindow = NULL;
+    theRenderer = NULL;
+
+    SDL_Quit();
+}
